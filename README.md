@@ -53,8 +53,8 @@ All you have to do is populate these, invoking `next()` when complete, and you a
 For example:
 
 ```
-	$ node .\node_modules\mongo-migrate -runmm create add-pets
-	$ node .\node_modules\mongo-migrate -runmm create add-owners
+	$ node .\node_modules\mongo-migrate\index.js -runmm create add-pets
+	$ node .\node_modules\mongo-migrate\index.js -runmm create add-owners
 ```
 
 The first call creates `./migrations/0005-add-pets.js`, which we can populate:
@@ -87,7 +87,7 @@ The second creates `./migrations/0010-add-owners.js`, which we can populate:
 When first running the migrations, all will be executed in sequence.
 
 ```
-	node .\node_modules\mongo-migrate -runmm
+	node .\node_modules\mongo-migrate\index.js -runmm
 	up : migrations/0005-add-pets.js
 	up : migrations/0010-add-owners.js
 	migration : complete
@@ -95,19 +95,19 @@ When first running the migrations, all will be executed in sequence.
 
 Subsequent attempts will simply output "complete", as they have already been executed on the given database. `mongo-migrate` knows this because it stores migrations already run against the database in the `migrations` collection.
 ```
-	$ node mongo-migrate -runmm
+	$ node .\node_modules\mongo-migrate\index.js  -runmm
 	migration : complete
 ```
 
 If we were to create another migration using `node .\node_modules\mongo-migrate -runmm create coolest-owner`, and then execute migrations again, we would execute only those not previously executed:
 ```
-	$ node .\node_modules\mongo-migrate -runmm
+	$ node .\node_modules\mongo-migrate\index.js  -runmm
 	up : migrations/0015-coolest-owner
 ```
 
 If we were to then migrate using `node .\node_modules\mongo-migrate -runmm down 5`. This means to run from current revision, which in this case would be `0015-coolecst-owner`, down to revision number 5. Note that you can use either the revision number, or then full revision name `0005-add-pets`
 ```
-	$ node .\node_modules\mongo-migrate -runmm down 5
+	$ node .\node_modules\mongo-migrate\index.js  -runmm down 5
 	down : migrations/0015-coolest-owner
 	down : migrations/0010-add-owners
 ```
@@ -116,7 +116,7 @@ If we were to then migrate using `node .\node_modules\mongo-migrate -runmm down 
 ### Working Directory
 The options for connecting to the database are read in from a file. You can configure where the file is read in from and where the migration directory root is by the `-c <path>` option.
 ```
-	$ node .\node_modules\mongo-migrate -runmm -c ../.. up
+	$ node .\node_modules\mongo-migrate\index.js  -runmm -c ../.. up
 	migration : complete
 ```
 This would set the working directory two levels above the mongo-migrate directory, such as if you included it into another project and it was nested in the node_modules folder.
@@ -124,14 +124,14 @@ This would set the working directory two levels above the mongo-migrate director
 ### Config filename
 The default configuration filename is `default-config.json`. If you wish to use a different filename, use the `-cfg <filename>` option:
 ```
-	$ node .\node_modules\mongo-migrate -runmm -cfg my-config.json up
+	$ node .\node_modules\mongo-migrate\index.js  -runmm -cfg my-config.json up
 	migration : complete
 ```
 
 ### Config file property name
 Inside the configuration file, mongo-migrate expects the database connection information to be nested inside an object. The default object name is `mongoAppDb`. If you wish to change this you can use the `-dbn <string>` option:
 ```
-	$ node .\node_modules\mongo-migrate -runmm -dbn dbSettings up
+	$ node .\node_modules\mongo-migrate\index.js  -runmm -dbn dbSettings up
 	migration : complete
 ```
 This would tell mongo-migrate your config file looks something like:
